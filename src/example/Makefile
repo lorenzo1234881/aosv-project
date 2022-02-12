@@ -1,0 +1,19 @@
+PROGRAM = example.elf
+LIBS = -lpthread -lums
+CFLAGS = -Wall -I../lkm -I../lib -L../lib
+
+N_WORKER_THREADS?=5
+N_COMPLETION_LISTS?=2
+WT_WORKLOAD?=4000000000
+NUM_YIELDS?=2
+
+CFLAGS += -DN_WORKER_THREADS=$(N_WORKER_THREADS)
+CFLAGS += -DN_COMPLETION_LISTS=$(N_COMPLETION_LISTS)
+CFLAGS += -DWT_WORKLOAD=$(WT_WORKLOAD)
+CFLAGS += -DNUM_YIELDS=$(NUM_YIELDS)
+
+all:
+	gcc $(CFLAGS) main.c -o $(PROGRAM) $(LIBS) -Wl,-rpath=../lib
+
+clean:
+	rm -rfv $(PROGRAM)
